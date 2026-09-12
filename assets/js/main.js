@@ -31,6 +31,31 @@
     safeSet(THEME_KEY, next);
   });
 
+  /* ---------- Menú móvil ---------- */
+  var navToggle = document.querySelector("[data-nav-toggle]");
+  var mobileNav = document.getElementById("mobile-nav");
+  if (navToggle && mobileNav) {
+    var closeMobileNav = function () {
+      mobileNav.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    };
+    navToggle.addEventListener("click", function () {
+      var isOpen = mobileNav.classList.toggle("is-open");
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+    mobileNav.addEventListener("click", function (e) {
+      if (e.target.closest("a")) closeMobileNav();
+    });
+    document.addEventListener("click", function (e) {
+      if (!mobileNav.classList.contains("is-open")) return;
+      if (mobileNav.contains(e.target) || navToggle.contains(e.target)) return;
+      closeMobileNav();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeMobileNav();
+    });
+  }
+
   /* ---------- Barra de progreso de scroll ---------- */
   var progress = document.querySelector(".scroll-progress");
   function updateProgress() {

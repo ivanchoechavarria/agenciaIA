@@ -54,6 +54,8 @@
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2.4M12 19.1v2.4M4.3 4.3l1.7 1.7M18 18l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.3 19.7l1.7-1.7M18 6l1.7-1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 13.8A8.5 8.5 0 1 1 10.2 4a6.8 6.8 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-alert" viewBox="0 0 24 24"><path d="M20 13.8A8.5 8.5 0 1 1 10.2 4a6.8 6.8 0 0 0 9.8 9.8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
 
@@ -61,7 +63,7 @@
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a href="#top" class="wordmark"><span class="mark">IA</span>IAechavarría</a>
+    <a href="#top" class="wordmark"><span class="mark">IAE</span><span class="brand-text">IAechavarría</span></a>
     <ul class="nav-links">
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#especializacion">Turismo dental y médico</a></li>
@@ -77,10 +79,23 @@
         <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
         <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
       </button>
-      <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" style="padding:10px 18px;">
-        <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp
+      <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa nav-cta" aria-label="Hablar por WhatsApp">
+        <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="nav-cta-label">Hablar por WhatsApp</span>
       </a>
+      <button type="button" class="icon-btn nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menú">
+        <svg class="i-menu" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="i-close" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
     </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#servicios">Servicios</a>
+    <a href="#especializacion">Turismo dental y médico</a>
+    <a href="#como-trabajamos">Cómo trabajamos</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" style="justify-content:center;margin-top:6px;">
+      <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp
+    </a>
   </div>
 </header>
 
@@ -213,8 +228,8 @@
   <div class="wrap">
     <div class="about-inner">
       <div class="about-avatar">IAE</div>
-      <p class="quote">"No hay equipo de ventas ni call center detrás de IAechavarría. Hablas directamente con la persona que construye y mantiene tu sistema."</p>
-      <p class="byline">— Iván Andrés Echavarría, Ingeniero informático especializado en transformación digital y automatización con IA</p>
+      <p class="quote">"En IAE combinamos ingeniería de software e inteligencia artificial para construir sistemas que trabajan por tu negocio todos los días. Un equipo especializado en transformación digital, enfocado en resultados medibles que impulsan tu operación — no en vender horas de consultoría."</p>
+      <p class="byline">— Equipo IAE, transformación digital y automatización con inteligencia artificial</p>
     </div>
   </div>
 </section>
