@@ -151,7 +151,7 @@ html[data-theme="light"] .icon-btn .i-sun{display:block;}
   box-shadow:0 14px 30px -14px var(--teal-glow);
   transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-html[data-theme="light"] .btn{color:#fff;}
+html[data-theme="light"] .btn:not(.btn-ghost){color:#fff;}
 .btn:hover{transform:translateY(-2px);box-shadow:0 20px 38px -14px var(--teal-glow);filter:brightness(1.05);}
 .btn-wa{background:linear-gradient(160deg,var(--wa),var(--wa-deep));color:#062f16;box-shadow:0 14px 30px -14px rgba(37,211,102,0.4);}
 .btn-wa:hover{box-shadow:0 20px 38px -14px rgba(37,211,102,0.5);}
