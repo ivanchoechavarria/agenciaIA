@@ -166,8 +166,14 @@
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
+            var target = entry.target;
+            target.classList.add("is-visible");
+            target.addEventListener("transitionend", function done(ev) {
+              if (ev.target !== target || ev.propertyName !== "transform") return;
+              target.classList.add("reveal-done");
+              target.removeEventListener("transitionend", done);
+            });
+            io.unobserve(target);
           }
         });
       },

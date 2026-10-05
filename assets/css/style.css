@@ -359,8 +359,27 @@ footer{padding:40px 0;border-top:1px solid var(--line);}
 @keyframes pulse-wa{0%,100%{box-shadow:0 14px 30px -10px rgba(37,211,102,0.55);}50%{box-shadow:0 14px 34px -6px rgba(37,211,102,0.8);}}
 
 /* ---------- Reveal on scroll (used sparingly) ---------- */
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease-out), transform .7s var(--ease-out);transition-delay:var(--d,0ms);}
 .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+/* Tras el revelado, las tarjetas recuperan sus transiciones de hover rápidas */
+.reveal.reveal-done{transition-delay:0ms;}
+.service-card.reveal-done{transition:transform .2s var(--ease-out),border-color .2s var(--ease-out),box-shadow .2s var(--ease-out);}
+.service-card:active{transform:scale(.985);}
+
+/* Chat del nicho: solo se reproduce al entrar en pantalla */
+.spotlight:not(.is-visible) .bubble-row{animation-play-state:paused;}
+.spotlight .phone .bubble-row:nth-child(2){animation-delay:.4s;}
+.spotlight .phone .bubble-row:nth-child(3){animation-delay:1.3s;}
+.spotlight .phone .bubble-row:nth-child(4){animation-delay:2.4s;}
+
+/* Cierre: amanecer dorado */
+.cta-box > h2,.cta-box > .cta-actions{position:relative;z-index:1;}
+.cta-glow{position:absolute;left:50%;bottom:0;width:130%;height:70%;transform:translate(-50%,40%);background:radial-gradient(ellipse at 50% 100%,var(--gold) 0%,color-mix(in srgb,var(--gold) 45%,transparent) 28%,color-mix(in srgb,var(--teal) 14%,transparent) 52%,transparent 70%);opacity:0;filter:blur(24px);pointer-events:none;transition:opacity 1.2s var(--ease-out),transform 1.8s var(--ease-out);}
+.cta-box.is-visible .cta-glow{opacity:.6;transform:translate(-50%,10%);}
+.cta-box{transition:opacity .6s var(--ease-out),transform .7s var(--ease-out),border-color 1.2s var(--ease-out);}
+.cta-box.is-visible{border-color:var(--gold-line);}
+html[data-theme="light"] .cta-box.is-visible .cta-glow{opacity:.4;}
 
 /* ---------- Legal pages ---------- */
 .legal-wrap{max-width:760px;margin:0 auto;padding:64px 32px 96px;}
