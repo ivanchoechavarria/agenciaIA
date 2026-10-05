@@ -159,6 +159,167 @@
     }
   });
 
+  /* ---------- Demo del chat del hero: bucle ES/EN, con audios y agente de IA ---------- */
+  var sim = document.getElementById("chat-sim");
+  if (sim) {
+    var simBody = sim.querySelector(".cs-body");
+    var simBtns = [].slice.call(sim.querySelectorAll("[data-lang]"));
+    var pageLang = document.documentElement.lang === "en" ? "en" : "es";
+    var SIM_UI = {
+      es: { pending: "Transcribiendo audio…", done: "Audio entendido" },
+      en: { pending: "Transcribing audio…", done: "Audio understood" }
+    };
+    var SCENES = {
+      es: [
+        { who: "in", voice: "0:07", text: "Hola, quiero agendar una cita para esta semana" },
+        { who: "out", text: "¡Hola! Con gusto te ayudo. Tengo cupo el jueves y el viernes. ¿Prefieres mañana o tarde?" },
+        { who: "in", text: "Jueves en la tarde" },
+        { who: "out", text: "Listo, quedas agendado el jueves a las 3:00 p.m. La confirmación te llega por aquí mismo." }
+      ],
+      en: [
+        { who: "in", text: "Hi! Do you have availability next week?" },
+        { who: "out", text: "Hi! Yes — Tuesday or Wednesday. Which works better for you?" },
+        { who: "in", voice: "0:04", text: "Wednesday morning, please" },
+        { who: "out", text: "Done! You're booked for Wednesday at 10:00 AM. You'll get a reminder right here." }
+      ]
+    };
+    var simToken = 0, simPaused = false, simVisible = false, simCurrent = pageLang;
+
+    function mk(tag, cls, txt) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (txt) n.textContent = txt;
+      return n;
+    }
+    function icon(id) {
+      var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      s.setAttribute("aria-hidden", "true");
+      var u = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      u.setAttribute("href", "#" + id);
+      s.appendChild(u);
+      return s;
+    }
+    function bubble(step, lang, instant) {
+      var b = mk("div", "msg " + step.who + (step.voice ? " voice" : ""));
+      b.setAttribute("lang", lang);
+      if (step.who === "out") b.appendChild(mk("em", "ai", "IA"));
+      if (step.voice) {
+        var play = mk("span", "vplay");
+        play.appendChild(icon("i-play"));
+        var wave = mk("span", "wave");
+        for (var i = 0; i < 24; i++) {
+          var bar = document.createElement("i");
+          bar.style.setProperty("--h", (28 + ((i * 37 + 11) % 62)) + "%");
+          bar.style.setProperty("--n", i);
+          wave.appendChild(bar);
+        }
+        b.appendChild(play);
+        b.appendChild(wave);
+        b.appendChild(mk("span", "vtime", step.voice));
+        var vt = mk("div", "vtext");
+        vt.appendChild(icon("i-mic"));
+        vt.appendChild(mk("span", "vt-label", ""));
+        b.appendChild(vt);
+        b._vt = vt;
+        if (instant) { vt.classList.add("is-shown"); vt.lastChild.textContent = "“" + step.text + "”"; }
+      } else {
+        b.appendChild(document.createTextNode(step.text));
+      }
+      return b;
+    }
+    function typingEl() {
+      var t = mk("div", "msg typing");
+      t.setAttribute("aria-hidden", "true");
+      t.appendChild(document.createElement("i"));
+      t.appendChild(document.createElement("i"));
+      t.appendChild(document.createElement("i"));
+      return t;
+    }
+    function setLang(l) {
+      simBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-lang") === l ? "true" : "false"); });
+    }
+    function wait(ms, my) {
+      return new Promise(function (res) {
+        var left = ms;
+        (function tick() {
+          if (my !== simToken) return res(false);
+          if (left <= 0) return res(true);
+          if (!(simPaused || !simVisible || document.hidden)) left -= 100;
+          setTimeout(tick, 100);
+        })();
+      });
+    }
+    function renderStatic(lang) {
+      simBody.textContent = "";
+      SCENES[lang].forEach(function (s) { simBody.appendChild(bubble(s, lang, true)); });
+      setLang(lang);
+    }
+    async function playVoice(b, step, lang, my) {
+      b.classList.add("is-playing");
+      if (!(await wait(1900, my))) return false;
+      b.classList.remove("is-playing");
+      var vt = b._vt;
+      vt.classList.add("is-shown", "is-pending");
+      vt.lastChild.textContent = SIM_UI[lang].pending;
+      if (!(await wait(1000, my))) return false;
+      vt.classList.remove("is-pending");
+      vt.lastChild.textContent = "“" + step.text + "”";
+      return wait(1300, my);
+    }
+    async function runLoop(my) {
+      while (my === simToken) {
+        simBody.classList.remove("is-fading");
+        simBody.textContent = "";
+        setLang(simCurrent);
+        var steps = SCENES[simCurrent];
+        for (var i = 0; i < steps.length; i++) {
+          var s = steps[i];
+          if (s.who === "out") {
+            var ty = typingEl();
+            simBody.appendChild(ty);
+            if (!(await wait(1100, my))) return;
+            ty.remove();
+          } else if (i > 0) {
+            if (!(await wait(800, my))) return;
+          }
+          var b = bubble(s, simCurrent, false);
+          simBody.appendChild(b);
+          if (s.voice) { if (!(await playVoice(b, s, simCurrent, my))) return; }
+          else if (!(await wait(900 + s.text.length * 14, my))) return;
+        }
+        if (!(await wait(3200, my))) return;
+        simBody.classList.add("is-fading");
+        if (!(await wait(500, my))) return;
+        simCurrent = simCurrent === "es" ? "en" : "es";
+      }
+    }
+    function startSim(lang) {
+      simToken++;
+      if (lang) simCurrent = lang;
+      if (reduceMotion) { renderStatic(simCurrent); return; }
+      runLoop(simToken);
+    }
+    simBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () { startSim(btn.getAttribute("data-lang")); });
+    });
+    sim.addEventListener("mouseenter", function () { simPaused = true; });
+    sim.addEventListener("mouseleave", function () { simPaused = false; });
+    sim.addEventListener("focusin", function () { simPaused = true; });
+    sim.addEventListener("focusout", function () { simPaused = false; });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var was = simVisible;
+          simVisible = en.isIntersecting;
+          if (simVisible && !was && !simToken) startSim();
+        });
+      }, { threshold: 0.25 }).observe(sim);
+    } else {
+      simVisible = true;
+      startSim();
+    }
+  }
+
   /* ---------- Revelado al hacer scroll (uso puntual, no en todo) ---------- */
   var revealEls = document.querySelectorAll(".reveal");
   if (revealEls.length && "IntersectionObserver" in window) {
