@@ -1,0 +1,24 @@
+---
+name: responsive-design
+description: Reglas de diseño responsive y auditoría automática (desbordes, texto pegado a bordes, objetivos táctiles) para el sitio ERconnectIA. Úsala al crear o modificar secciones, tarjetas, encabezado, menú o cualquier maquetación, y antes de publicar para comprobar móvil y tablet.
+---
+
+# Responsive design — ERconnectIA
+
+Diseña **mobile-first** (320–390 px) y amplía a tablet (768) y escritorio (≥981). Verifica siempre en tema oscuro y claro. Complementa a `emil-motion` (movimiento) y `seo-audit` (SEO).
+
+## Reglas del sistema
+1. **Gutter** de 20 px en móvil (`.wrap`); nada puede ser más ancho que la pantalla (`html{overflow-x:clip}` es una red de seguridad, no la solución: corrige la causa).
+2. **Separación texto ↔ borde ≥ 12 px** dentro de tarjetas, paneles, botones y chips. Padding de tarjetas: 22–26 px en móvil, 30+ en escritorio. En mockups de columnas estrechas (kanban) se admite 8–9 px solo por debajo de 560 px.
+3. **Ritmo vertical constante:** `padding-block: clamp(52px, 8vw, 84px)` por sección. Cada sección empieza con una barra de acento en su `h2` (`.section-head h2::before`). Alterna bandas (`--band`) con bordes finos en `.services` y `.how` para que se distingan las secciones.
+4. **Tipografía móvil:** h1 32 px, h2 28 px, texto 16–17 px, interlineado ≥1.5; `text-wrap: balance` en títulos y `pretty` en párrafos. Citas largas ≤ 20 px.
+5. **Objetivos táctiles ≥ 30–36 px** (ideal 44): enlaces sueltos con `padding` vertical, botones de icono 34–38 px.
+6. **Encabezado:** ≤980 px usa hamburguesa; 981–1279 px el botón de WhatsApp va solo con icono; ≥1280 px completo. El logo baja a 26 px (≤400) y 22 px (≤350).
+7. **Fondos decorativos** (aurora, haz, imagen del hero) siempre con degradado hacia `--bg` en el borde para que no se vea un corte.
+8. **Botón flotante de WhatsApp:** 52 px en móvil y `footer` con `padding-bottom` ≥ 100 px para que no tape texto.
+
+## Flujo
+1. `node scripts/responsive-audit.mjs` (o la tarea de VS Code "5. Auditoría responsive"). Mide 320, 360, 390, 768 y 1024 px en oscuro y claro. Opciones: `--widths 360,414 --pages index.html --min 14`.
+2. Corrige primero los **desbordes** (↔), luego **texto pegado** (▢) y **táctiles** (☝). Los avisos sobre `.hero-bg`, `.aurora` o contenido dentro de contenedores con `overflow:hidden` no cuentan.
+3. Confirma a ojo en 360 y 390 px (el menú abierto, la sección Plataforma con las 4 pestañas, el pie de página) y en modo claro.
+4. Antes de publicar: `node scripts/responsive-audit.mjs` debe terminar sin desbordes.

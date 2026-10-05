@@ -129,9 +129,9 @@ html[data-theme="light"] .logo-on-light{display:block;}
 .nav-links a{text-decoration:none;color:var(--muted);transition:color .15s ease;}
 .nav-links a:hover{color:var(--ink);}
 .nav-right{display:flex;align-items:center;gap:14px;}
-@media(max-width:860px){.nav-links{display:none;}}
+@media(max-width:980px){.nav-links{display:none;}}
 .nav-cta{padding:10px 18px;white-space:nowrap;}
-@media(max-width:860px){
+@media(max-width:980px){
   .nav-cta{padding:10px;gap:0;}
   .nav-cta .nav-cta-label{display:none;}
   .nav-right{gap:10px;}
@@ -144,7 +144,7 @@ html[data-theme="light"] .logo-on-light{display:block;}
 
 /* Menú móvil (hamburguesa) */
 .nav-toggle{display:none !important;}
-@media(max-width:860px){.nav-toggle{display:flex !important;}}
+@media(max-width:980px){.nav-toggle{display:flex !important;}}
 .nav-toggle .i-close{display:none;}
 .nav-toggle[aria-expanded="true"] .i-menu{display:none;}
 .nav-toggle[aria-expanded="true"] .i-close{display:block;}
@@ -157,7 +157,7 @@ html[data-theme="light"] .logo-on-light{display:block;}
   border-top:1px solid var(--line);
 }
 .mobile-nav.is-open{display:flex;}
-@media(min-width:861px){.mobile-nav{display:none !important;}}
+@media(min-width:981px){.mobile-nav{display:none !important;}}
 .mobile-nav a{
   padding:13px 2px;font-size:16px;color:var(--ink-dim);text-decoration:none;
   border-bottom:1px solid var(--line);
@@ -535,3 +535,81 @@ html[data-theme="light"] .msg.out{color:#fff;}
 .shift-card.is-visible .sbar i{animation:p-grow 1s var(--ease-out) both;animation-delay:calc(var(--i) * 130ms + 200ms);}
 .shift-card.is-visible .sbar.a i{animation-delay:calc(var(--i) * 130ms + 600ms);}
 .shift-card .demo-note{text-align:left;}
+
+/* =====================================================================
+   Pulido responsive (auditoría móvil)
+   Reglas: gutter de 20 px · texto ≥12 px de cualquier borde de su contenedor ·
+   ritmo vertical constante entre secciones, separadas por bandas y divisores ·
+   objetivos táctiles ≥36 px · nada más ancho que la pantalla.
+   ===================================================================== */
+:root{--band:#0D1322;}
+html[data-theme="light"]{--band:#ECEBE2;}
+html{overflow-x:clip;}
+h1,h2,h3{text-wrap:balance;}
+p{text-wrap:pretty;}
+
+/* Encabezado: nunca más ancho que la pantalla */
+.wordmark{padding:4px 0;}
+.lang-switch a{display:flex;align-items:center;min-height:34px;}
+@media(max-width:640px){header.nav{padding:12px 0;}}
+@media(max-width:400px){
+  .nav-inner{gap:8px;}
+  .wordmark .logo{height:26px;}
+  .nav-right{gap:6px;}
+  .lang-switch a{padding:0 9px;}
+  .icon-btn{width:36px;height:36px;}
+}
+@media(max-width:350px){
+  .wordmark .logo{height:22px;}
+  .lang-switch{font-size:12px;}
+  .lang-switch a{padding:0 7px;}
+  .icon-btn{width:34px;height:34px;}
+}
+
+/* Ritmo vertical y separación entre secciones */
+.transform,.services,.platform,.niche,.how,.about,.cta{padding-block:clamp(52px,8vw,84px);}
+.services,.how{background:var(--band);border-block:1px solid var(--line);}
+.section-head{margin-bottom:clamp(28px,5vw,44px);}
+.section-head h2::before{content:"";display:block;width:40px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--gold));margin-bottom:18px;}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:0;}
+.problem{padding-top:8px;}
+
+/* Pasos "Cómo trabajamos" como tarjetas */
+.how-step{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius-lg);padding:24px 22px;}
+.how-step .num{margin-top:14px;}
+@media(max-width:900px){.how-grid{gap:16px;}}
+
+/* Detalles de tamaño de componentes */
+.chip{padding:5px 12px;}
+@media(min-width:560px){.kcol{padding:10px;}.kcard{padding:10px;}}
+.link-inline{display:inline-block;padding:9px 0;}
+.mobile-nav a{padding:14px 2px;}
+
+/* Móvil */
+@media(max-width:640px){
+  .section-head h2{font-size:28px;}
+  .section-head p{font-size:16px;}
+  .hero{padding:48px 0 40px;}
+  .hero p.lead{font-size:17px;}
+  .problem p{font-size:16px;line-height:1.6;}
+  .service-card{padding:26px 22px;}
+  .spotlight{padding:28px 22px;}
+  .spotlight h2{font-size:26px;}
+  .stat-row{display:grid;gap:16px;margin-top:22px;}
+  .stat{padding-left:14px;border-left:2px solid var(--gold-line);}
+  .stat b{font-size:26px;}
+  .quote{font-size:20px;line-height:1.45;}
+  .wa-float{right:16px;bottom:16px;width:52px;height:52px;}
+  footer{padding:36px 0 104px;}
+}
+
+/* Tablet horizontal / laptop pequeña: el menú completo cabe con el botón de WhatsApp compacto */
+@media(min-width:981px) and (max-width:1279px){
+  .nav-cta .nav-cta-label{display:none;}
+  .nav-cta{padding:10px;gap:0;}
+  .nav-links{gap:16px;}
+}
+@media(min-width:560px){.kcol,.kcard{padding:12px;}}
+.wordmark{padding:7px 0;}
+@media(max-width:350px){.lang-switch a{padding:0 8px;}}
+.back{padding:8px 0;}
