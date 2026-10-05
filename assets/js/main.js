@@ -168,6 +168,7 @@
           if (entry.isIntersecting) {
             var target = entry.target;
             target.classList.add("is-visible");
+            if (target.querySelector("[data-count]")) countUp(target);
             target.addEventListener("transitionend", function done(ev) {
               if (ev.target !== target || ev.propertyName !== "transform") return;
               target.classList.add("reveal-done");
