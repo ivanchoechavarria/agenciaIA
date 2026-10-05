@@ -35,7 +35,7 @@ try {
 const d = new Date();
 const p = (n) => String(n).padStart(2, "0");
 const tag = `v${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
-const last = sh("git log -1 --pretty=%h\\ %s");
+const last = sh('git log -1 --pretty=format:"%h %s"');
 console.log(`\nVersión a publicar: ${tag}\nÚltimo commit: ${last}`);
 
 if (dry) { console.log("\n(dry-run) Todo en orden; no se creó ninguna etiqueta."); process.exit(0); }
