@@ -177,9 +177,9 @@
         { who: "out", text: "Listo, quedas agendado el jueves a las 3:00 p.m. La confirmación te llega por aquí mismo." }
       ],
       en: [
-        { who: "in", text: "Hi! Do you have availability next week?" },
+        { who: "in", voice: "0:05", text: "Hi! Do you have availability next week?" },
         { who: "out", text: "Hi! Yes — Tuesday or Wednesday. Which works better for you?" },
-        { who: "in", voice: "0:04", text: "Wednesday morning, please" },
+        { who: "in", text: "Wednesday morning, please" },
         { who: "out", text: "Done! You're booked for Wednesday at 10:00 AM. You'll get a reminder right here." }
       ]
     };
@@ -293,27 +293,63 @@
         simCurrent = simCurrent === "es" ? "en" : "es";
       }
     }
+    var motionOK = !reduceMotion;
+    var started = false;
+
+    /* Altura exacta: la conversación completa (la más alta de las dos) siempre cabe, a cualquier ancho */
+    function measureScene(lang, w) {
+      var probe = mk("div", "cs-body");
+      probe.style.cssText = "position:absolute;left:-9999px;top:0;visibility:hidden;height:auto;overflow:visible;justify-content:flex-start;width:" + w + "px";
+      sim.appendChild(probe);
+      SCENES[lang].forEach(function (s) { var m = bubble(s, lang, true); m.style.animation = "none"; probe.appendChild(m); });
+      var h = probe.offsetHeight;
+      probe.remove();
+      return h;
+    }
+    function fitHeight() {
+      var w = simBody.clientWidth;
+      if (!w) return;
+      simBody.style.height = Math.ceil(Math.max(measureScene("es", w), measureScene("en", w)) + 6) + "px";
+    }
+    var fitTimer;
+    window.addEventListener("resize", function () { clearTimeout(fitTimer); fitTimer = setTimeout(fitHeight, 150); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeight);
+    fitHeight();
+
     function startSim(lang) {
       simToken++;
       if (lang) simCurrent = lang;
-      if (reduceMotion) { renderStatic(simCurrent); return; }
+      if (!motionOK) { renderStatic(simCurrent); return; }
       runLoop(simToken);
     }
     simBtns.forEach(function (btn) {
       btn.addEventListener("click", function () { startSim(btn.getAttribute("data-lang")); });
     });
-    sim.addEventListener("mouseenter", function () { simPaused = true; });
-    sim.addEventListener("mouseleave", function () { simPaused = false; });
-    sim.addEventListener("focusin", function () { simPaused = true; });
+
+    /* Pausa para leer: solo con ratón (en pantallas táctiles no hay "salir del puntero", se quedaría congelado) o teclado */
+    sim.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") simPaused = true; });
+    sim.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") simPaused = false; });
+    sim.addEventListener("focusin", function (e) { try { if (e.target.matches(":focus-visible")) simPaused = true; } catch (x) {} });
     sim.addEventListener("focusout", function () { simPaused = false; });
+
+    /* Quien tiene activado "reducir movimiento" ve la conversación completa y puede reproducirla si quiere */
+    if (!motionOK) {
+      var pb = mk("button", "cs-playbtn", pageLang === "en" ? "Play demo" : "Reproducir demostración");
+      pb.type = "button";
+      pb.addEventListener("click", function () { motionOK = true; pb.remove(); startSim(); });
+      simBody.parentNode.insertBefore(pb, simBody.nextSibling);
+    }
+
+    /* Cada vez que el chat entra en pantalla, la demostración arranca desde el audio inicial */
+    function onVisible(v) {
+      var was = simVisible;
+      simVisible = v;
+      if (v && !was && (!started || motionOK)) { started = true; startSim(); }
+    }
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          var was = simVisible;
-          simVisible = en.isIntersecting;
-          if (simVisible && !was && !simToken) startSim();
-        });
-      }, { threshold: 0.25 }).observe(sim);
+        entries.forEach(function (en) { onVisible(en.isIntersecting); });
+      }, { threshold: 0.6 }).observe(simBody);
     } else {
       simVisible = true;
       startSim();
