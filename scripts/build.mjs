@@ -34,6 +34,7 @@ for (const item of config.include) {
   if (!existsSync(src)) { missing.push(item); continue; }
   cpSync(src, join(out, item), { recursive: true });
 }
+for (const ex of config.exclude || []) rmSync(join(out, ex), { recursive: true, force: true });
 if (missing.length) console.warn("Aviso: no existen y se omiten →", missing.join(", "));
 for (const must of ["index.html", "404.html"]) {
   if (!existsSync(join(out, must))) { console.error(`Falta ${must}; el sitio no está completo.`); process.exit(1); }

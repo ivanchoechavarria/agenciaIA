@@ -11,5 +11,10 @@
     "sitemap.xml",
     "robots.txt",
     ".htaccess"
+  ],
+  "exclude": [
+    "assets/img/logo/source",
+    "assets/img/social/profile-1080.png",
+    "assets/img/social/facebook-cover.png"
   ]
 }
