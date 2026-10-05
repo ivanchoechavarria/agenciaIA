@@ -1,5 +1,5 @@
 /* ============================================================
-   IAechavarría — Sistema de diseño
+   IAconnectIA — Sistema de diseño
    Oscuro por defecto, con alternativa clara coherente con marca.
    ============================================================ */
 
@@ -32,6 +32,9 @@
   --radius-lg:22px;
   --radius-md:14px;
   --radius-sm:9px;
+
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-in-out:cubic-bezier(.77,0,.175,1);
 }
 
 html[data-theme="light"]{
@@ -119,6 +122,9 @@ header.nav{
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;}
 .wordmark{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:20px;font-weight:600;letter-spacing:-0.01em;text-decoration:none;color:var(--ink);}
 .wordmark .mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(155deg,var(--teal),var(--teal-deep));display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:10.5px;font-weight:600;letter-spacing:-0.02em;color:var(--bg);flex-shrink:0;}
+.wordmark .brand-text{display:flex;flex-direction:column;line-height:1.05;}
+.wordmark .brand-name b{font-weight:600;color:var(--teal);}
+.wordmark .brand-sub{font-family:'Inter',sans-serif;font-size:8.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
 .nav-links{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;font-size:14.5px;white-space:nowrap;}
 .nav-links a{text-decoration:none;color:var(--muted);transition:color .15s ease;}
 .nav-links a:hover{color:var(--ink);}
@@ -210,6 +216,11 @@ html[data-theme="light"] .btn:not(.btn-ghost){color:#fff;}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;padding:80px 0 56px;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 55%,transparent 100%);}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:right center;opacity:0;transform:scale(1.04);transition:opacity 1.1s var(--ease-out),transform 1.6s var(--ease-out);}
+.hero-bg img.is-loaded{opacity:.6;transform:none;}
+html[data-theme="light"] .hero-bg{display:none;}
+@media(max-width:900px){.hero-bg img{object-position:70% center;}.hero-bg img.is-loaded{opacity:.4;}}
 .aurora{position:absolute;inset:-20% -10% auto -10%;height:900px;z-index:0;pointer-events:none;filter:blur(70px);opacity:.55;}
 .aurora span{position:absolute;border-radius:50%;}
 .aurora .a1{width:480px;height:480px;left:2%;top:0;background:radial-gradient(circle,var(--teal) 0%,transparent 70%);animation:drift1 22s ease-in-out infinite;}
