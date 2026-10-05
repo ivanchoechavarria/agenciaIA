@@ -23,6 +23,13 @@
       "detail": "Mide desbordes, texto pegado y objetivos táctiles en 320–1024 px, tema oscuro y claro"
     },
     {
+      "label": "2c. Prueba del chat del hero",
+      "type": "shell",
+      "command": "node scripts/chat-test.mjs",
+      "problemMatcher": [],
+      "detail": "Comprueba bucle, audio inicial, ES/EN, que no se recorte y que no se congele en táctil"
+    },
+    {
       "label": "3. Probar versión de pruebas en local",
       "type": "shell",
       "command": "node scripts/build.mjs --target staging --base agenciaIA && node scripts/serve.mjs --dir dist --prefix agenciaIA --port 5501",

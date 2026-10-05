@@ -49,6 +49,8 @@ Terminal → **Run Task…** (o `Ctrl+Shift+P` → *Tasks: Run Task*):
 |---|---|
 | **1. Ver sitio en local** | `http://localhost:5500/`. Úsala en lugar de abrir `index.html` con doble clic: el sitio usa rutas desde la raíz |
 | **2. Auditoría SEO** | Revisa títulos, descripciones, enlaces, imágenes, hreflang… |
+| **2b. Auditoría responsive** | Desbordes, texto pegado y objetivos táctiles en 320–1440 px, oscuro y claro |
+| **2c. Prueba del chat del hero** | Bucle, audio inicial, ES/EN, que no se recorte y que no se congele en táctil |
 | **3. Probar versión de pruebas en local** | Simula GitHub Pages en `http://localhost:5501/agenciaIA/` |
 | **4. PUBLICAR EN PRODUCCIÓN** | Comprueba, pide confirmación y crea la versión que se despliega en Hostinger |
 
@@ -77,6 +79,7 @@ GitHub → Actions → **Producción (Hostinger)** → *Run workflow* → en *Us
 | No existe la rama `production` | Ejecuta a mano el flujo "Producción (Hostinger)" |
 | El flujo de Producción falla al subir | Revisa *Workflow permissions* (lectura y escritura) |
 | La URL de pruebas se ve sin estilos | Abriste el HTML sin servidor o las rutas no se reescribieron: usa las tareas 1 o 3 |
+| Producción muestra el HTML nuevo pero CSS/JS viejos (el chat sale sin estilos) | La caché de Hostinger guarda los estáticos días o semanas. Desde ahora el build añade una huella a cada recurso (`style.css?v=ab12cd34`), así que cada cambio es una URL nueva. Si ves un caso raro: hPanel → Rendimiento / Caché → *Purgar todo* y recarga con `Ctrl+F5` |
 | Cambios que no aparecen en producción | Purga la caché en hPanel y recarga sin caché (`Ctrl+F5`) |
 | `docs/` o `.claude/` accesibles en producción | No pueden estarlo: solo se sube lo de `include`. Revisa `site.config.json` |
 

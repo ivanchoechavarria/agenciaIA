@@ -22,3 +22,7 @@ Diseña **mobile-first** (320–390 px) y amplía a tablet (768) y escritorio (�
 2. Corrige primero los **desbordes** (↔), luego **texto pegado** (▢) y **táctiles** (☝). Los avisos sobre `.hero-bg`, `.aurora` o contenido dentro de contenedores con `overflow:hidden` no cuentan.
 3. Confirma a ojo en 360 y 390 px (el menú abierto, la sección Plataforma con las 4 pestañas, el pie de página) y en modo claro.
 4. Antes de publicar: `node scripts/responsive-audit.mjs` debe terminar sin desbordes.
+
+## Recursos con huella y pruebas de comportamiento
+- El build (`scripts/build.mjs`) añade `?v=<huella>` a todo CSS, JS e imagen enlazados desde el HTML. Hostinger cachea estáticos por días: sin huella se mezclaba HTML nuevo con CSS/JS viejos. No quites esta función ni enlaces recursos con rutas que el build no reescriba (deben ir como `href="/assets/…"` o `src="/assets/…"`).
+- `node scripts/chat-test.mjs` (tarea "2c") verifica el chat del hero: estilos cargados, bucle que arranca con una nota de voz en ES y EN, alternancia de idiomas, conversación sin recortes a 320–1280 px, selector ES/EN, y pausa solo con ratón (en táctil no debe congelarse). Ejecútala tras tocar el chat.

@@ -9,6 +9,7 @@
 //            (noindex + robots.txt) y añade un aviso "Entorno de pruebas".
 // production → copia tal cual (Hostinger, dominio propio en la raíz).
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync, readdirSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, resolve, extname } from "node:path";
 
 const args = process.argv.slice(2);
@@ -71,6 +72,29 @@ if (target === "staging") {
   if (bad.length) { console.error("Producción contiene referencias de pruebas en:\n" + bad.join("\n")); process.exit(1); }
 }
 
+// Huella de contenido en los recursos (CSS, JS, imágenes): /assets/css/style.css → ...?v=ab12cd34
+// La caché de Hostinger guarda los estáticos días o semanas; con la huella, cada cambio es una URL nueva
+// y nunca se mezcla HTML nuevo con CSS/JS viejo.
+const hashes = new Map();
+const fileHash = (rel) => {
+  if (!hashes.has(rel)) {
+    const f = join(out, rel);
+    hashes.set(rel, existsSync(f) && statSync(f).isFile() ? createHash("md5").update(readFileSync(f)).digest("hex").slice(0, 8) : null);
+  }
+  return hashes.get(rel);
+};
+let stamped = 0;
+for (const f of walk(out).filter((p) => extname(p) === ".html")) {
+  const html = readFileSync(f, "utf8");
+    const next = html.replace(/\b(href|src)="((?:\/[A-Za-z0-9_.-]+)*)\/assets\/([^"?#]+)"/g, (m, attr, prefix, rest) => {
+    const h = fileHash("assets/" + rest);
+    if (!h) return m;
+    stamped++;
+    return `${attr}="${prefix}/assets/${rest}?v=${h}"`;
+  });
+  if (next !== html) writeFileSync(f, next);
+}
+
 const files = walk(out);
 const kb = files.reduce((s, f) => s + statSync(f).size, 0) / 1024;
-console.log(`Build ${target} → ${out}\n  archivos: ${files.length} · ${kb.toFixed(0)} KB${target === "staging" ? ` · base ${base}` : ""}`);
+console.log(`Build ${target} → ${out}\n  archivos: ${files.length} · ${kb.toFixed(0)} KB · recursos con huella: ${stamped}${target === "staging" ? ` · base ${base}` : ""}`);
