@@ -5,7 +5,7 @@ description: Auditoría y mejora de SEO para el sitio estático bilingüe de ERc
 
 # SEO Audit — ERconnectIA
 
-Sitio estático (HTML/CSS/JS puro): `index.html` + `en/index.html` + páginas de privacidad. Dominio: `https://erconnectia.com/` (canónico sin `www`, rutas en la raíz). Hoy se sirve desde GitHub Pages (CNAME) y migrará a Hostinger; ver `docs/DESPLIEGUE.md`. Mercados: Colombia y clientes del exterior (turismo de salud/estético). Nicho principal: salud y estética en general. Servicios: Transformación digital (el más fuerte: automatizar procesos costosos para liberar tiempo y dedicarlo a lo que genera valor), CRM, Agente conversacional con IA, Marketing y Construcción de sitios web. Ver `keywords.md`.
+Sitio estático (HTML/CSS/JS puro): `index.html` + `en/index.html` + páginas de privacidad. Dominio: `https://erconnectia.com/` (canónico sin `www`, rutas en la raíz). Pruebas en GitHub Pages (URL gratuita, noindex); producción en Hostinger vía rama `production`; ver `docs/DESPLIEGUE.md`. Mercados: Colombia y clientes del exterior (turismo de salud/estético). Nicho principal: salud y estética en general. Servicios: Transformación digital (el más fuerte: automatizar procesos costosos para liberar tiempo y dedicarlo a lo que genera valor), CRM, Agente conversacional con IA, Marketing y Construcción de sitios web. Ver `keywords.md`.
 
 ## Flujo (ahorra tokens: audita primero, edita después)
 

@@ -1,0 +1,47 @@
+name: Producción (Hostinger)
+
+# Se ejecuta SOLO cuando publicas a propósito:
+#   - subiendo una etiqueta  v*   (lo hace  node scripts/publicar.mjs  o la tarea de VS Code), o
+#   - manualmente desde GitHub → Actions → "Producción (Hostinger)" → Run workflow
+#     (puedes elegir una etiqueta antigua para volver a una versión anterior).
+#
+# Genera el build de producción y lo guarda en la rama "production".
+# Hostinger (Advanced → Git) tiene conectada esa rama y la despliega en public_html.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Auditoría SEO (falla solo si hay errores)
+        run: node .claude/skills/seo-audit/scripts/audit.mjs --fail-on-error
+
+      - name: Construir versión de producción
+        run: node scripts/build.mjs --target production
+
+      - name: Publicar en la rama production
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: production
+          publish_dir: ./dist
+          enable_jekyll: true
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: "Producción ${{ github.ref_name }} (${{ github.sha }})"

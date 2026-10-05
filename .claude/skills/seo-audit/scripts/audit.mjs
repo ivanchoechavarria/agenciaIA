@@ -178,3 +178,5 @@ for (const lvl of ["error", "warn", "info"]) {
   for (const f of group) console.log(`[${f.page}] (${f.rule}) ${f.msg}`);
   console.log("");
 }
+
+if (args.includes("--fail-on-error") && count("error") > 0) process.exit(1);

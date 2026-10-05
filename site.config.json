@@ -1,0 +1,15 @@
+{
+  "name": "ERconnectIA",
+  "domain": "erconnectia.com",
+  "productionUrl": "https://erconnectia.com/",
+  "include": [
+    "index.html",
+    "404.html",
+    "privacidad.html",
+    "en",
+    "assets",
+    "sitemap.xml",
+    "robots.txt",
+    ".htaccess"
+  ]
+}

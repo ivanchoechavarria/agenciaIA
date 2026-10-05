@@ -1,0 +1,14 @@
+{
+  "name": "erconnectia-web",
+  "private": true,
+  "type": "module",
+  "description": "Sitio estático ERconnectIA. Pruebas en GitHub Pages, producción en Hostinger.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "audit": "node .claude/skills/seo-audit/scripts/audit.mjs",
+    "build:staging": "node scripts/build.mjs --target staging --base agenciaIA",
+    "build:prod": "node scripts/build.mjs --target production",
+    "preview:staging": "node scripts/serve.mjs --dir dist --prefix agenciaIA --port 5501",
+    "publicar": "node scripts/publicar.mjs"
+  }
+}

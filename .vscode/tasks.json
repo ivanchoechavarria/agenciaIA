@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Ver sitio en local",
+      "type": "shell",
+      "command": "node scripts/serve.mjs",
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Abre http://localhost:5500/ (usa este servidor: el sitio usa rutas desde la raíz)"
+    },
+    {
+      "label": "2. Auditoría SEO",
+      "type": "shell",
+      "command": "node .claude/skills/seo-audit/scripts/audit.mjs",
+      "problemMatcher": []
+    },
+    {
+      "label": "3. Probar versión de pruebas en local",
+      "type": "shell",
+      "command": "node scripts/build.mjs --target staging --base agenciaIA && node scripts/serve.mjs --dir dist --prefix agenciaIA --port 5501",
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Simula GitHub Pages: http://localhost:5501/agenciaIA/"
+    },
+    {
+      "label": "4. PUBLICAR EN PRODUCCIÓN (Hostinger)",
+      "type": "shell",
+      "command": "node scripts/publicar.mjs",
+      "problemMatcher": [],
+      "detail": "Comprueba, pide confirmación y crea la versión que se despliega en Hostinger"
+    }
+  ]
+}
