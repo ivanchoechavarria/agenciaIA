@@ -2,7 +2,12 @@
   "use strict";
 
   /* ---------- Tema oscuro/claro ---------- */
-  var THEME_KEY = "iaechavarria-theme";
+  var THEME_KEY = "erconnectia-theme";
+  var CONSENT_KEY = "erconnectia-consent";
+  // Aviso de cookies: APAGADO mientras el sitio solo guarde la preferencia de tema (funcionalidad que el visitante pide al
+  // pulsar el botón; no requiere consentimiento). Ponlo en true cuando se añada analítica/marketing (p. ej. GA4):
+  // el aviso, el enlace "Preferencias de cookies" del pie y toda la lógica de consentimiento ya están listos.
+  var COOKIE_BANNER = false;
   var root = document.documentElement;
 
   function safeGet(key) {
@@ -12,6 +17,16 @@
     try { window.localStorage.setItem(key, value); } catch (e) { /* modo privado o bloqueado: sin persistencia */ }
   }
 
+  function safeRemove(key) {
+    try { window.localStorage.removeItem(key); } catch (e) { /* sin acceso al almacenamiento */ }
+  }
+  // La elección sobre cookies es lo único "necesario"; la preferencia de tema solo se guarda si el visitante la permite.
+  function readConsent() {
+    try { var c = JSON.parse(safeGet(CONSENT_KEY)); return c && c.v === 1 ? c : null; } catch (e) { return null; }
+  }
+  function prefsAllowed() { if (!COOKIE_BANNER) return true; var c = readConsent(); return !!(c && c.prefs); }
+  safeRemove("iaechavarria-theme"); // clave del nombre anterior de la marca
+
   function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
     var toggle = document.querySelector("[data-theme-toggle]");
@@ -19,7 +34,7 @@
   }
 
   // El sitio siempre inicia en oscuro salvo que el visitante ya haya elegido claro antes.
-  var stored = safeGet(THEME_KEY);
+  var stored = prefsAllowed() ? safeGet(THEME_KEY) : null;
   applyTheme(stored === "light" ? "light" : "dark");
 
   document.addEventListener("click", function (e) {
@@ -28,8 +43,95 @@
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "light" ? "dark" : "light";
     applyTheme(next);
-    safeSet(THEME_KEY, next);
+    if (prefsAllowed()) safeSet(THEME_KEY, next);
   });
+
+  /* ---------- Aviso de cookies / almacenamiento técnico ---------- */
+  (function () {
+    if (!COOKIE_BANNER) {
+      safeRemove(CONSENT_KEY); // sin aviso no hay elección que recordar
+      [].forEach.call(document.querySelectorAll("[data-cookie-prefs]"), function (el) { (el.closest("li") || el).hidden = true; });
+      return;
+    }
+    var isEn = document.documentElement.lang === "en";
+    var T = isEn ? {
+      label: "Cookie notice",
+      title: "Cookies and technical storage",
+      text: "We only use the technical storage needed for the site to work and to remember your choice. With your permission, we also save your preferences (light or dark theme). We don't use advertising or tracking cookies.",
+      link: "Cookie policy", href: "/en/cookies/",
+      accept: "Accept preferences", necessary: "Necessary only"
+    } : {
+      label: "Aviso de cookies",
+      title: "Cookies y almacenamiento técnico",
+      text: "Usamos únicamente el almacenamiento técnico necesario para que el sitio funcione y recuerde tu elección. Con tu permiso, también guardamos tus preferencias (tema claro u oscuro). No usamos cookies de publicidad ni de seguimiento.",
+      link: "Política de cookies", href: "/cookies/",
+      accept: "Aceptar preferencias", necessary: "Solo lo necesario"
+    };
+    var banner = null, firstBtn = null;
+
+    function build() {
+      banner = document.createElement("div");
+      banner.className = "cookie-banner";
+      banner.id = "cookie-banner";
+      banner.setAttribute("role", "region");
+      banner.setAttribute("aria-label", T.label);
+      banner.hidden = true;
+      var title = document.createElement("p");
+      title.className = "cb-title";
+      title.textContent = T.title;
+      var text = document.createElement("p");
+      text.className = "cb-text";
+      text.appendChild(document.createTextNode(T.text + " "));
+      var a = document.createElement("a");
+      a.href = T.href;
+      a.textContent = T.link;
+      text.appendChild(a);
+      var actions = document.createElement("div");
+      actions.className = "cb-actions";
+      firstBtn = document.createElement("button");
+      firstBtn.type = "button";
+      firstBtn.className = "btn";
+      firstBtn.textContent = T.accept;
+      firstBtn.addEventListener("click", function () { choose(true); });
+      var second = document.createElement("button");
+      second.type = "button";
+      second.className = "btn btn-ghost";
+      second.textContent = T.necessary;
+      second.addEventListener("click", function () { choose(false); });
+      actions.appendChild(firstBtn);
+      actions.appendChild(second);
+      banner.appendChild(title);
+      banner.appendChild(text);
+      banner.appendChild(actions);
+      document.body.appendChild(banner);
+    }
+    function measure() {
+      if (banner && !banner.hidden) root.style.setProperty("--cb-h", banner.offsetHeight + "px");
+    }
+    function show(focus) {
+      if (!banner) build();
+      banner.hidden = false;
+      root.classList.add("has-cookie-banner");
+      measure();
+      if (focus && firstBtn) firstBtn.focus();
+    }
+    function hide() {
+      if (banner) banner.hidden = true;
+      root.classList.remove("has-cookie-banner");
+      root.style.removeProperty("--cb-h");
+    }
+    function choose(prefs) {
+      var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      safeSet(CONSENT_KEY, JSON.stringify({ v: 1, prefs: prefs, ts: new Date().toISOString() }));
+      if (prefs) safeSet(THEME_KEY, current); else safeRemove(THEME_KEY);
+      hide();
+    }
+    document.addEventListener("click", function (e) {
+      if (e.target.closest("[data-cookie-prefs]")) show(true);
+    });
+    window.addEventListener("resize", measure);
+    if (!readConsent()) show(false);
+  })();
 
   /* ---------- Menú móvil ---------- */
   var navToggle = document.querySelector("[data-nav-toggle]");

@@ -10,10 +10,10 @@
 <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/logo/favicon-96.png?v=e389cb80">
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/img/logo/favicon-192.png?v=8410a1bc">
 <link rel="apple-touch-icon" href="/assets/img/logo/apple-touch-icon.png?v=014f3510">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css?v=bdada4b8">
+<!-- Tipografías alojadas en este servidor (sin conexión a Google). Cambiar de tipografía: ver docs/TIPOGRAFIA.md -->
+<link rel="preload" href="/assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/style.css?v=8e497adf">
 </head>
 <body>
 <header class="nav">
@@ -31,6 +31,50 @@
     <a href="/en/" class="btn btn-ghost" lang="en">Go to English site</a>
   </div>
 </main>
-<script src="/assets/js/main.js?v=e6ab4cf7"></script>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo" aria-label="ERconnectIA — CRM conversacional con IA">
+          <img class="logo-on-dark" src="/assets/img/logo/erconnectia-logo-on-dark.svg?v=5187f6ad" alt="ERconnectIA — CRM conversacional con IA" width="600" height="420">
+          <img class="logo-on-light" src="/assets/img/logo/erconnectia-logo-on-light.svg?v=5b643043" alt="" aria-hidden="true" width="600" height="480">
+        </a>
+        <p>Transformación digital con IA para salud y estética: CRM, agentes conversacionales, marketing y sitios web.</p>
+      </div>
+      <nav class="footer-col" aria-labelledby="ft-explore">
+        <h2 id="ft-explore">Explora</h2>
+        <ul>
+          <li><a href="/#plataforma">Plataforma</a></li>
+          <li><a href="/#servicios">Servicios</a></li>
+          <li><a href="/#transformacion">Transformación digital</a></li>
+          <li><a href="/#salud-estetica">Salud y estética</a></li>
+          <li><a href="/#como-trabajamos">Cómo trabajamos</a></li>
+          <li><a href="/#nosotros">Nosotros</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-labelledby="ft-legal">
+        <h2 id="ft-legal">Legal</h2>
+        <ul>
+          <li><a href="/terminos/">Términos y condiciones</a></li>
+          <li><a href="/privacidad/">Política de privacidad</a></li>
+          <li><a href="/cookies/">Política de cookies</a></li>
+          <li><button type="button" class="linklike" data-cookie-prefs>Preferencias de cookies</button></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h2>Contacto</h2>
+        <ul class="footer-contact">
+          <li><a href="mailto:info@erconnectia.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>info@erconnectia.com</a></li>
+          <li><a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.2C4 7.9 7.8 4.5 12.3 4.5c4.5 0 8.2 3.4 8.2 7.7 0 4.3-3.7 7.7-8.2 7.7-1 0-2-.2-2.9-.5L4.5 20.5l1-3.4C4.5 15.9 4 14.1 4 12.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="12.2" r="0.9" fill="currentColor"/><circle cx="12.3" cy="12.2" r="0.9" fill="currentColor"/><circle cx="15.6" cy="12.2" r="0.9" fill="currentColor"/></svg>WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a></li>
+          <li><span class="footer-place"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Colombia · clientes en todo el mundo</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ERconnectIA. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/main.js?v=7e5ca3f7"></script>
 </body>
 </html>
