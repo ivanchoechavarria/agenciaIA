@@ -17,19 +17,19 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/"/>
   </url>
   <url>
-    <loc>https://erconnectia.com/privacidad.html</loc>
+    <loc>https://erconnectia.com/privacidad/</loc>
     <lastmod>2026-10-05</lastmod>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/privacidad/"/>
   </url>
   <url>
-    <loc>https://erconnectia.com/en/privacidad.html</loc>
+    <loc>https://erconnectia.com/en/privacy/</loc>
     <lastmod>2026-10-05</lastmod>
     <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/privacidad.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/privacidad/"/>
   </url>
 </urlset>
