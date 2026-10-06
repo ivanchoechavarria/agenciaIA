@@ -36,6 +36,11 @@ Sitio estático (HTML/CSS/JS puro): `index.html` + `en/index.html` + páginas de
 **Datos estructurados (JSON-LD)**
 - `Organization`/`ProfessionalService` con `name`, `url`, `logo`, `email`, `areaServed`, `sameAs` (cuando existan redes). Añadir `SoftwareApplication` para la plataforma y `FAQPage` si se agregan preguntas frecuentes reales. Solo datos veritables (no inventar reseñas ni calificaciones).
 
+**URLs amigables**
+- Cada página es una carpeta con su `index.html` (`/privacidad/`, `/en/privacy/`, futuras `/crm-whatsapp/`…): la dirección nunca muestra `index.html` ni `.html`, en cualquier servidor y también en la URL de pruebas. Todas con barra final, igual que `/` y `/en/`.
+- Nombres en minúsculas, con guiones, sin acentos ni mayúsculas, y en el idioma de la página (`/privacidad/` en español, `/en/privacy/` en inglés).
+- Si cambia una dirección: carpeta nueva + redirección 301 en `.htaccess` de la antigua + canonical, hreflang, enlaces internos y `sitemap.xml` con la nueva. La auditoría avisa de enlaces con `.html` y de sitemap incoherente.
+
 **Rastreo e indexación**
 - `sitemap.xml` con ambas versiones y `xhtml:link` de hreflang; `robots.txt` apuntando al sitemap.
 - Con dominio propio en la raíz, `robots.txt` y `sitemap.xml` viven en `https://erconnectia.com/`. Enviar el sitemap por Google Search Console y Bing Webmaster.

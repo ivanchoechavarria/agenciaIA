@@ -17,7 +17,7 @@ const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
 const widths = flag("--widths", "320,360,390,768,1024").split(",").map(Number);
 const MIN = Number(flag("--min", 12)); // separación mínima texto ↔ borde del contenedor (px)
-const pages = flag("--pages", "index.html,en/index.html,privacidad.html").split(",");
+const pages = flag("--pages", "index.html,en/index.html,privacidad/,en/privacy/").split(",");
 
 const chrome = process.env.CHROME_PATH || [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",

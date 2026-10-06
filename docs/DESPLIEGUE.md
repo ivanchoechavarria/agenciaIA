@@ -83,6 +83,24 @@ GitHub → Actions → **Producción (Hostinger)** → *Run workflow* → en *Us
 | Cambios que no aparecen en producción | Purga la caché en hPanel y recarga sin caché (`Ctrl+F5`) |
 | `docs/` o `.claude/` accesibles en producción | No pueden estarlo: solo se sube lo de `include`. Revisa `site.config.json` |
 
+## Comprobación tras publicar
+Sustituye el dominio si cambia. Todo debe responder como se indica:
+
+| Dirección | Debe responder |
+|---|---|
+| `https://erconnectia.com/`, `/en/`, `/privacidad/`, `/en/privacy/` | 200 |
+| `/sitemap.xml`, `/robots.txt`, `/favicon.ico` | 200 |
+| `http://erconnectia.com/` y `https://www.erconnectia.com/` | 301 → `https://erconnectia.com/` |
+| `/index.html` y `/en/index.html` | 301 → `/` y `/en/` |
+| `/privacidad.html` | 301 → `/privacidad/` |
+| `/en/privacidad.html` | 301 → `/en/privacy/` |
+| Una ruta inexistente | página 404 propia |
+| `/docs/`, `/.claude/`, `/scripts/` | 404 (no se publican) |
+
+Prueba rápida de una redirección: `curl -sI https://erconnectia.com/index.html` debe mostrar `301` y `location: https://erconnectia.com/`.
+
+Si añades páginas nuevas, crea una carpeta con su `index.html` (`/crm-whatsapp/`), agrégala a `sitemap.xml` y ejecuta la auditoría SEO: avisa de enlaces con `.html` y de un sitemap incoherente.
+
 ## Seguridad
 - `.env` (clave de Kie.ai) está en `.gitignore` y no se versiona.
 - No guardes contraseñas de Hostinger en el repositorio: la conexión usa la *GitHub App*, sin credenciales en GitHub.

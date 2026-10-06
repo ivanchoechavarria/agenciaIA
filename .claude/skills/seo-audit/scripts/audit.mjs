@@ -94,7 +94,7 @@ for (const file of pages) {
 
   // JSON-LD
   const ld = [...html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)];
-  if (!ld.length && !/privacidad/.test(page)) add(page, "warn", "schema", "Sin datos estructurados JSON-LD.");
+  if (!ld.length && !/privacidad|privacy/.test(page)) add(page, "warn", "schema", "Sin datos estructurados JSON-LD.");
   for (const b of ld) {
     try { const j = JSON.parse(b[1]); if (!j["@type"]) add(page, "warn", "schema", "JSON-LD sin @type."); }
     catch { add(page, "error", "schema", "JSON-LD con JSON inválido."); }
@@ -135,12 +135,13 @@ for (const file of pages) {
     }
     const local = resolveLocal(href.split("#")[0], file);
     if (local && !existsSync(local)) add(page, "error", "link-broken", `Enlace interno roto: ${href}`);
+    if (/[.]html([?#]|$)/.test(href) && !/404[.]html/.test(href)) add(page, "warn", "url", `Enlace con ".html" o index: usa una dirección amigable (p. ej. / o /privacidad/): ${href}`);
     if (!strip(t.length ? body.slice(body.indexOf(t), body.indexOf(t) + 400) : "").split("</a>")[0] && !attr(t, "aria-label")) add(page, "info", "link-text", `Enlace sin texto/aria-label: ${href}`);
   }
 
   // Contenido
   const words = strip(body.replace(/<header[\s\S]*?<\/header>|<footer[\s\S]*?<\/footer>/gi, " ")).split(" ").length;
-  if (words < 300 && !/privacidad/.test(page)) add(page, "info", "content", `Poco texto indexable (${words} palabras); considerar ampliar contenido útil.`);
+  if (words < 300 && !/privacidad|privacy/.test(page)) add(page, "info", "content", `Poco texto indexable (${words} palabras); considerar ampliar contenido útil.`);
 }
 
 function resolveLocal(src, fromFile) {
@@ -161,6 +162,17 @@ for (const [page, m] of Object.entries(meta)) {
     if (!Object.values(target[1].hreflang).includes(m.canonical)) add(page, "warn", "hreflang", `Falta reciprocidad: ${target[0]} no enlaza de vuelta a ${page}.`);
   }
 }
+
+// URLs amigables y sitemap coherente con los canonical
+const smFile = join(root, "sitemap.xml");
+if (existsSync(smFile)) {
+  const locs = [...readFileSync(smFile, "utf8").matchAll(/<loc>([^<]+)<[/]loc>/g)].map((x) => x[1]);
+  const canons = Object.entries(meta).filter(([p]) => !noindexPages.has(p)).map(([p, x]) => [p, x.canonical]);
+  for (const [p, c] of canons) if (c && !locs.includes(c)) add(p, "warn", "sitemap", `El canonical no está en sitemap.xml: ${c}`);
+  for (const l of locs) if (!canons.some(([, c]) => c === l)) add("sitemap.xml", "warn", "sitemap", `URL del sitemap sin página canónica correspondiente: ${l}`);
+  for (const l of locs) if (/[.]html([?#]|$)/.test(l)) add("sitemap.xml", "warn", "url", `URL poco amigable en el sitemap: ${l}`);
+}
+for (const [p, x] of Object.entries(meta)) if (x.canonical && /[.]html([?#]|$)/.test(x.canonical) && !noindexPages.has(p)) add(p, "warn", "url", `El canonical termina en .html: ${x.canonical}`);
 
 // Archivos de sitio
 const has = (n) => existsSync(join(root, n));
