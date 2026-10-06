@@ -5,8 +5,11 @@
 //
 //   node scripts/publicar.mjs            → pide confirmación y publica
 //   node scripts/publicar.mjs --dry-run  → solo hace las comprobaciones
-import { execSync } from "node:child_process";
+import { execSync, spawnSync } from "node:child_process";
 import { createInterface } from "node:readline/promises";
+import { mkdtempSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 
 const dry = process.argv.includes("--dry-run");
 const sh = (c) => execSync(c, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -31,6 +34,12 @@ try {
   console.error(String(e.stdout || e.message).split("\n").slice(0, 25).join("\n"));
   fail("La auditoría SEO tiene errores. Corrígelos antes de publicar.");
 }
+
+console.log("→ Comprobando que el sitio de producción se puede construir (datos legales completos)…");
+const tmpBuild = mkdtempSync(join(tmpdir(), "chk-"));
+const chk = spawnSync(process.execPath, ["scripts/build.mjs", "--target", "production", "--out", join(tmpBuild, "dist")], { encoding: "utf8" });
+rmSync(tmpBuild, { recursive: true, force: true });
+if (chk.status !== 0) { console.error((chk.stderr || chk.stdout || "").trim()); fail("El build de producción falla. Corrígelo antes de publicar (no se creó ninguna etiqueta)."); }
 
 const d = new Date();
 const p = (n) => String(n).padStart(2, "0");

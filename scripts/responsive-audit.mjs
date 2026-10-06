@@ -17,7 +17,7 @@ const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
 const widths = flag("--widths", "320,360,390,768,1024").split(",").map(Number);
 const MIN = Number(flag("--min", 12)); // separación mínima texto ↔ borde del contenedor (px)
-const pages = flag("--pages", "index.html,en/index.html,privacidad/,en/privacy/").split(",");
+const pages = flag("--pages", "index.html,en/index.html,privacidad/,en/privacy/,terminos/,en/terms/,cookies/,en/cookies/").split(",");
 
 const chrome = process.env.CHROME_PATH || [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",
@@ -30,7 +30,7 @@ if (!chrome) { console.error("No encuentro Chrome/Edge. Define CHROME_PATH."); p
 // 1) build de producción a una carpeta temporal y servidor en memoria
 const tmp = mkdtempSync(join(tmpdir(), "resp-"));
 const dist = join(tmp, "dist");
-spawnSync(process.execPath, ["scripts/build.mjs", "--target", "production", "--out", dist], { stdio: "ignore" });
+spawnSync(process.execPath, ["scripts/build.mjs", "--target", "production", "--lenient", "--out", dist], { stdio: "ignore" });
 
 const types = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".xml": "application/xml", ".txt": "text/plain" };
 const probe = `<!doctype html><meta charset=utf-8><body><script>
@@ -49,10 +49,10 @@ function analyse(w,d){
     if((b.right>vw+1||b.left<-1)&&!scroller(el)&&!el.closest('.hero-bg,.aurora,.hero-beam,.wa-float,svg')) r.offscreen.push(sel(el)+' ['+Math.round(b.left)+'..'+Math.round(b.right)+']');
     if(vw<=480&&(el.tagName==='A'||el.tagName==='BUTTON')&&(b.height<30||b.width<30)&&!el.closest('p,li')&&cs.display!=='inline') r.small.push(sel(el)+' '+Math.round(b.width)+'x'+Math.round(b.height));
   });
-  const isBox=(el)=>{const cs=w.getComputedStyle(el);const bw=parseFloat(cs.borderLeftWidth)>0&&alpha(cs.borderLeftColor)>0.02;return (bw||alpha(cs.backgroundColor)>0.04)&&parseFloat(cs.borderTopLeftRadius)>0&&el.getBoundingClientRect().width>110;};
+  const isBox=(el)=>{if(el.classList&&el.classList.contains('legal-todo'))return false;const cs=w.getComputedStyle(el);const bw=parseFloat(cs.borderLeftWidth)>0&&alpha(cs.borderLeftColor)>0.02;return (bw||alpha(cs.backgroundColor)>0.04)&&parseFloat(cs.borderTopLeftRadius)>0&&el.getBoundingClientRect().width>110;};
   const tw=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);const seen=new Set();
   while(tw.nextNode()){
-    const n=tw.currentNode;if(!n.textContent.trim())continue;const p=n.parentElement;if(!p||p.closest('script,style,svg'))continue;
+    const n=tw.currentNode;if(!n.textContent.trim())continue;const p=n.parentElement;if(!p||p.closest('script,style,svg,.sr-only'))continue;
     const ps=w.getComputedStyle(p);if(ps.display==='none'||ps.visibility==='hidden')continue;
     let box=null;for(let e=p;e&&e!==d.body;e=e.parentElement){if(isBox(e)){box=e;break;}}
     if(!box)continue;

@@ -31,7 +31,7 @@ if (!chrome) { console.error("No encuentro Chrome/Edge. Define CHROME_PATH."); p
 
 const tmp = mkdtempSync(join(tmpdir(), "chat-"));
 const dist = join(tmp, "dist");
-spawnSync(process.execPath, ["scripts/build.mjs", "--target", "production", "--out", dist], { stdio: "ignore" });
+spawnSync(process.execPath, ["scripts/build.mjs", "--target", "production", "--lenient", "--out", dist], { stdio: "ignore" });
 
 const probe = `<!doctype html><meta charset=utf-8><body><script>
 const WIDTHS=${JSON.stringify(widths)}, PAGES=${JSON.stringify(pages)};

@@ -3,6 +3,7 @@
 // Uso: node .claude/skills/seo-audit/scripts/audit.mjs [--base /] [--json]
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, relative, resolve, dirname } from "node:path";
+import { expandIncludes, applyLegal, readConfig } from "../../../../scripts/lib/site.mjs";
 
 const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
@@ -22,7 +23,7 @@ function walk(dir, out = []) {
   return out;
 }
 const files = walk(root);
-const pages = files.filter((f) => f.endsWith(".html"));
+const pages = files.filter((f) => f.endsWith(".html") && !/(^|\/)(partials|dist|node_modules)\//.test(relative(root, f).replace(/\\/g, "/")));
 const rel = (p) => relative(root, p).replace(/\\/g, "/");
 
 const attr = (tag, name) => {
@@ -36,8 +37,14 @@ const meta = {};
 const noindexPages = new Set();
 for (const file of pages) {
   const page = rel(file);
-  const html = readFileSync(file, "utf8");
+  // Piezas reutilizables (pie de página…) y datos legales, igual que en el build
+  const legalRes = applyLegal(expandIncludes(readFileSync(file, "utf8"), root), readConfig(root).legal);
+  const html = legalRes.html;
+  if (legalRes.missing.length) add(page, "warn", "legal", `Faltan datos legales en site.config.json (legal): ${legalRes.missing.join(", ")}. El build de producción no se completará hasta rellenarlos.`);
   const m = (meta[page] = { canonical: null, hreflang: {} });
+
+  // Privacidad: las tipografías deben servirse desde este servidor (la política de cookies dice que no hay terceros)
+  if (/fonts[.]googleapis[.]com|fonts[.]gstatic[.]com/.test(html)) add(page, "warn", "privacy", "Carga tipografías de Google: contradice la política de cookies. Aloja las fuentes en local (docs/TIPOGRAFIA.md).");
 
   // <html lang>
   const lang = (html.match(/<html[^>]*\blang\s*=\s*"([^"]+)"/i) || [])[1];
@@ -94,7 +101,7 @@ for (const file of pages) {
 
   // JSON-LD
   const ld = [...html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)];
-  if (!ld.length && !/privacidad|privacy/.test(page)) add(page, "warn", "schema", "Sin datos estructurados JSON-LD.");
+  if (!ld.length && !/privacidad|privacy|terminos|terms|cookies/.test(page)) add(page, "warn", "schema", "Sin datos estructurados JSON-LD.");
   for (const b of ld) {
     try { const j = JSON.parse(b[1]); if (!j["@type"]) add(page, "warn", "schema", "JSON-LD sin @type."); }
     catch { add(page, "error", "schema", "JSON-LD con JSON inválido."); }
@@ -141,7 +148,7 @@ for (const file of pages) {
 
   // Contenido
   const words = strip(body.replace(/<header[\s\S]*?<\/header>|<footer[\s\S]*?<\/footer>/gi, " ")).split(" ").length;
-  if (words < 300 && !/privacidad|privacy/.test(page)) add(page, "info", "content", `Poco texto indexable (${words} palabras); considerar ampliar contenido útil.`);
+  if (words < 300 && !/privacidad|privacy|terminos|terms|cookies/.test(page)) add(page, "info", "content", `Poco texto indexable (${words} palabras); considerar ampliar contenido útil.`);
 }
 
 function resolveLocal(src, fromFile) {

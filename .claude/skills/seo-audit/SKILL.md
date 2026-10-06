@@ -59,3 +59,11 @@ Sitio estático (HTML/CSS/JS puro): `index.html` + `en/index.html` + páginas de
 
 ## Al responder
 Informa conteos antes/después y los archivos tocados. No afirmes mejoras de posicionamiento: el SEO es gradual; sí puedes confirmar qué quedó técnicamente correcto. Si falta un dato (dominio, correo, redes), pregúntalo en lugar de inventarlo.
+
+## Piezas compartidas y datos legales
+- El pie de página vive en `partials/footer.es.html` y `partials/footer.en.html` y se inserta con `<!--@include partials/footer.es.html-->`. El build, el servidor local y la auditoría expanden esas marcas; no copies el pie a mano en cada página.
+- Los textos legales usan `{{legal.titular}}`, `{{legal.nit}}`, `{{legal.domicilio}}`… resueltos desde `site.config.json`. Si falta un dato, la auditoría avisa y el build de producción falla. Nunca publicar con datos pendientes. Ver `docs/LEGAL.md`.
+- Páginas legales (carpetas con `index.html`): `/terminos/`, `/privacidad/`, `/cookies/` y sus equivalentes `/en/terms/`, `/en/privacy/`, `/en/cookies/`; todas con canonical, hreflang y entrada en `sitemap.xml`.
+- Los enlaces a WhatsApp llevan siempre `target="_blank" rel="noopener noreferrer"` y un aviso para lectores de pantalla.
+- Las tipografías se alojan en `assets/fonts/` (ver `docs/TIPOGRAFIA.md`): no enlazar Google Fonts ni otros CDN de fuentes; la auditoría lo avisa. Las precargas viven en `partials/head-fonts.html` y se insertan con `<!--@include partials/head-fonts.html-->`.
+- El aviso de cookies está apagado (`COOKIE_BANNER = false` en `main.js`) hasta añadir analítica (GA4): entonces encenderlo y actualizar las políticas (`docs/LEGAL.md`).

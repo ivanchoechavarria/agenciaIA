@@ -7,6 +7,13 @@
 import { createServer } from "node:http";
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { join, resolve, extname, normalize } from "node:path";
+import { expandIncludes, applyLegal, readConfig } from "./lib/site.mjs";
+
+// Piezas reutilizables y datos legales también en la vista previa local (sirve el código fuente sin construir)
+const siteRoot = process.cwd();
+let legalData = {};
+try { legalData = readConfig(siteRoot).legal || {}; } catch {}
+const render = (file) => extname(file) === ".html" ? Buffer.from(applyLegal(expandIncludes(readFileSync(file, "utf8"), siteRoot), legalData).html) : readFileSync(file);
 
 const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
@@ -32,8 +39,8 @@ createServer((req, res) => {
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, "index.html");
   if (!existsSync(file)) {
     const nf = join(dir, "404.html");
-    res.writeHead(404, { "Content-Type": types[".html"] }).end(existsSync(nf) ? readFileSync(nf) : "404");
+    res.writeHead(404, { "Content-Type": types[".html"] }).end(existsSync(nf) ? render(nf) : "404");
     return;
   }
-  res.writeHead(200, { "Content-Type": types[extname(file)] || "application/octet-stream", "Cache-Control": "no-store" }).end(readFileSync(file));
+  res.writeHead(200, { "Content-Type": types[extname(file)] || "application/octet-stream", "Cache-Control": "no-store" }).end(render(file));
 }).listen(port, () => console.log(`Sirviendo ${dir} en http://localhost:${port}${prefix}/`));

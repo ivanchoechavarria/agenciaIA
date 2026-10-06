@@ -30,6 +30,13 @@
       "detail": "Comprueba bucle, audio inicial, ES/EN, que no se recorte y que no se congele en táctil"
     },
     {
+      "label": "2d. Prueba del aviso de cookies y del pie",
+      "type": "shell",
+      "command": "node scripts/consent-test.mjs",
+      "problemMatcher": [],
+      "detail": "Aviso de cookies, tema sin consentimiento, enlaces a WhatsApp en pestaña nueva y pie legal"
+    },
+    {
       "label": "3. Probar versión de pruebas en local",
       "type": "shell",
       "command": "node scripts/build.mjs --target staging --base agenciaIA && node scripts/serve.mjs --dir dist --prefix agenciaIA --port 5501",

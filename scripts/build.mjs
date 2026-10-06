@@ -11,6 +11,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync, readdirSync, statSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { join, resolve, extname } from "node:path";
+import { expandIncludes, applyLegal } from "./lib/site.mjs";
 
 const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); return i >= 0 && args[i + 1] ? args[i + 1] : d; };
@@ -49,6 +50,20 @@ function walk(dir, acc = []) {
   return acc;
 }
 
+// Piezas reutilizables (pie de página…) y datos legales, antes de cualquier otra transformación.
+// En producción, si falta un dato legal el build FALLA (--lenient solo para pruebas locales de diseño).
+const lenient = args.includes("--lenient");
+const pendingLegal = [];
+for (const f of walk(out).filter((p) => extname(p) === ".html")) {
+  const r = applyLegal(expandIncludes(readFileSync(f, "utf8"), root), config.legal, { strict: target === "production" && !lenient });
+  if (r.missing.length) pendingLegal.push(`  ${f.slice(out.length + 1)} → ${r.missing.join(", ")}`);
+  writeFileSync(f, r.html);
+}
+if (target === "production" && !lenient && pendingLegal.length) {
+  console.error("✖ Faltan datos legales en site.config.json (sección \"legal\"). No se publican textos legales incompletos:\n" + pendingLegal.join("\n"));
+  process.exit(1);
+}
+
 if (target === "staging") {
   const banner = '<div aria-hidden="true" style="position:fixed;left:12px;bottom:12px;z-index:9999;pointer-events:none;background:#E8AE4D;color:#1a1204;font:600 12px/1 Inter,Arial,sans-serif;padding:8px 11px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.35)">Entorno de pruebas · no es el sitio público</div>';
   for (const f of walk(out).filter((p) => extname(p) === ".html")) {
@@ -77,6 +92,7 @@ if (target === "staging") {
 // y nunca se mezcla HTML nuevo con CSS/JS viejo.
 const hashes = new Map();
 const fileHash = (rel) => {
+  if (rel.startsWith("assets/fonts/")) return null; // el CSS las pide sin huella; el nombre del archivo ya las identifica
   if (!hashes.has(rel)) {
     const f = join(out, rel);
     hashes.set(rel, existsSync(f) && statSync(f).isFile() ? createHash("md5").update(readFileSync(f)).digest("hex").slice(0, 8) : null);

@@ -17,6 +17,22 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/"/>
   </url>
   <url>
+    <loc>https://erconnectia.com/terminos/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/terminos/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/terminos/"/>
+  </url>
+  <url>
+    <loc>https://erconnectia.com/en/terms/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/terminos/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/terminos/"/>
+  </url>
+  <url>
     <loc>https://erconnectia.com/privacidad/</loc>
     <lastmod>2026-10-05</lastmod>
     <priority>0.3</priority>
@@ -31,5 +47,21 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/privacidad/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/privacidad/"/>
+  </url>
+  <url>
+    <loc>https://erconnectia.com/cookies/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/cookies/"/>
+  </url>
+  <url>
+    <loc>https://erconnectia.com/en/cookies/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://erconnectia.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://erconnectia.com/en/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://erconnectia.com/cookies/"/>
   </url>
 </urlset>

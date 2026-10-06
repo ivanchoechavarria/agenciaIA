@@ -11,11 +11,23 @@
     "sitemap.xml",
     "robots.txt",
     ".htaccess",
-    "favicon.ico"
+    "favicon.ico",
+    "terminos",
+    "cookies"
   ],
   "exclude": [
     "assets/img/logo/source",
     "assets/img/social/profile-1080.png",
     "assets/img/social/facebook-cover.png"
-  ]
+  ],
+  "legal": {
+    "titular": "ERconnectIA",
+    "nit": "81003431",
+    "domicilio": "Carrera 46 # 26 - 162, Bello, Antioquia",
+    "pais": "Colombia",
+    "email": "info@erconnectia.com",
+    "telefono": "+57 333 717 8377",
+    "vigencia": "5 de octubre de 2026",
+    "vigenciaEn": "October 5, 2026"
+  }
 }

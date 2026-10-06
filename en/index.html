@@ -47,7 +47,7 @@
   ],
   "logo": "https://erconnectia.com/assets/img/logo/erconnectia-icon-512.png",
   "url": "https://erconnectia.com/en/",
-  "email": "contacto@iaechavarria.com",
+  "email": "{{legal.email}}",
   "knowsAbout": [
     "digital transformation",
     "business process automation with AI",
@@ -94,9 +94,7 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,560;0,9..144,620;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--@include partials/head-fonts.html-->
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
@@ -144,7 +142,7 @@
         <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
         <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
       </button>
-      <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa nav-cta" aria-label="Chat on WhatsApp">
+      <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa nav-cta" aria-label="Chat on WhatsApp (opens in a new tab)" target="_blank" rel="noopener noreferrer">
         <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="nav-cta-label">Chat on WhatsApp</span>
       </a>
       <button type="button" class="icon-btn nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
@@ -160,9 +158,9 @@
     <a href="#health-aesthetics">Health & Aesthetics</a>
     <a href="#how-we-work">How We Work</a>
     <a href="#about">About</a>
-    <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa" style="justify-content:center;margin-top:6px;">
+    <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa" style="justify-content:center;margin-top:6px;" target="_blank" rel="noopener noreferrer">
       <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp
-    </a>
+    <span class="sr-only"> (opens in a new tab)</span></a>
   </div>
 </header>
 
@@ -177,7 +175,7 @@
       <h1 data-split style="margin-top:22px;">Digital transformation with AI: automate what drains your time</h1>
       <p class="lead">We automate the costly, repetitive processes in your business — customer service, scheduling, follow-up and reporting — so your team can invest that time in what creates value. CRM, AI agents, marketing and websites tailored to health and aesthetics, with a focus on attracting international clients.</p>
       <div class="hero-ctas">
-        <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp</a>
+        <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>
         <a href="#how-we-work" class="link-inline">See how we work</a>
       </div>
     </div>
@@ -402,29 +400,17 @@
       <span class="cta-glow" aria-hidden="true"></span>
       <h2>Which process is costing you the most time?</h2>
       <div class="cta-actions">
-        <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp</a>
-        <a href="mailto:contacto@iaechavarria.com" class="btn btn-ghost"><svg aria-hidden="true"><use href="#i-mail"/></svg>Send an email</a>
+        <a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="btn btn-wa" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Chat on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>
+        <a href="mailto:{{legal.email}}" class="btn btn-ghost"><svg aria-hidden="true"><use href="#i-mail"/></svg>Send an email</a>
       </div>
     </div>
   </div>
 </section>
 </main>
 
-<footer>
-  <div class="wrap footer-inner">
-    <a href="#top" class="footer-logo" aria-label="ERconnectIA — Conversational CRM with AI"><img class="logo-on-dark" src="/assets/img/logo/erconnectia-logo-en-on-dark.svg" alt="ERconnectIA — Conversational CRM with AI" width="600" height="420"><img class="logo-on-light" src="/assets/img/logo/erconnectia-logo-en-on-light.svg" alt="" aria-hidden="true" width="600" height="500"></a>
-    <span>© 2026 ERconnectIA · <a href="/en/privacy/" style="color:inherit;">Privacy</a></span>
-    <div class="social-links">
-      <!-- TODO: replace # with the real Instagram link -->
-      <a href="#" class="social-icon" aria-label="ERconnectIA on Instagram" title="Instagram (not yet set up)">IG</a>
-      <!-- TODO: replace # with the real Facebook link -->
-      <a href="#" class="social-icon" aria-label="ERconnectIA on Facebook" title="Facebook (not yet set up)">f</a>
-    </div>
-    <span style="display:flex;align-items:center;gap:7px;"><svg width="15" height="15" aria-hidden="true"><use href="#i-mail"/></svg>contacto@iaechavarria.com</span>
-  </div>
-</footer>
+<!--@include partials/footer.en.html-->
 
-<a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="wa-float" aria-label="Message us on WhatsApp" title="Message us on WhatsApp">
+<a href="https://wa.me/573337178377?text=Hi%21%20I%27d%20like%20more%20information%20about%20your%20services." class="wa-float" aria-label="Message us on WhatsApp (opens in a new tab)" title="Message us on WhatsApp (opens in a new tab)" target="_blank" rel="noopener noreferrer">
   <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
 </a>
 

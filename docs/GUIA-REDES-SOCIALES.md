@@ -17,7 +17,7 @@ Los menús de Meta cambian con frecuencia; la ruta general es esta. Haz los camb
 - **Bio corta (máx. 150 caracteres):**
   - ES: `CRM conversacional con IA + WhatsApp Business API. Atiende, agenda y mide a tus clientes 24/7.`
   - EN: `Conversational CRM with AI + WhatsApp Business API. Answer, book and track customers 24/7.`
-- **Correo:** el actual por ahora (`contacto@iaechavarria.com`).
+- **Correo:** `info@erconnectia.com`.
 
 ## 1. Instagram (desde la app)
 1. **Perfil → Editar perfil.**

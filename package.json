@@ -11,6 +11,7 @@
     "preview:staging": "node scripts/serve.mjs --dir dist --prefix agenciaIA --port 5501",
     "publicar": "node scripts/publicar.mjs",
     "audit:responsive": "node scripts/responsive-audit.mjs",
-    "test:chat": "node scripts/chat-test.mjs"
+    "test:chat": "node scripts/chat-test.mjs",
+    "test:consent": "node scripts/consent-test.mjs"
   }
 }

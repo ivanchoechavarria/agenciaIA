@@ -47,7 +47,7 @@
   ],
   "logo": "https://erconnectia.com/assets/img/logo/erconnectia-icon-512.png",
   "url": "https://erconnectia.com/",
-  "email": "contacto@iaechavarria.com",
+  "email": "{{legal.email}}",
   "knowsAbout": [
     "transformación digital",
     "automatización de procesos con inteligencia artificial",
@@ -94,9 +94,7 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,560;0,9..144,620;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--@include partials/head-fonts.html-->
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
@@ -144,7 +142,7 @@
         <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
         <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
       </button>
-      <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa nav-cta" aria-label="Hablar por WhatsApp">
+      <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa nav-cta" aria-label="Hablar por WhatsApp (se abre en una pestaña nueva)" target="_blank" rel="noopener noreferrer">
         <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="nav-cta-label">Hablar por WhatsApp</span>
       </a>
       <button type="button" class="icon-btn nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menú">
@@ -160,9 +158,9 @@
     <a href="#salud-estetica">Salud y estética</a>
     <a href="#como-trabajamos">Cómo trabajamos</a>
     <a href="#nosotros">Nosotros</a>
-    <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" style="justify-content:center;margin-top:6px;">
+    <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" style="justify-content:center;margin-top:6px;" target="_blank" rel="noopener noreferrer">
       <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp
-    </a>
+    <span class="sr-only"> (se abre en una pestaña nueva)</span></a>
   </div>
 </header>
 
@@ -177,7 +175,7 @@
       <h1 data-split style="margin-top:22px;">Transformación digital con IA: automatiza lo que te quita tiempo</h1>
       <p class="lead">Automatizamos los procesos costosos y repetitivos de tu empresa — atención, agendamiento, seguimiento y reportes — para que tu equipo invierta ese tiempo en lo que genera valor. CRM, agentes de IA, marketing y sitios web a la medida para salud y estética, con foco en atraer clientes del exterior.</p>
       <div class="hero-ctas">
-        <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp</a>
+        <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
         <a href="#como-trabajamos" class="link-inline">Ver cómo trabajamos</a>
       </div>
     </div>
@@ -402,29 +400,17 @@
       <span class="cta-glow" aria-hidden="true"></span>
       <h2>¿Qué proceso te está costando más tiempo?</h2>
       <div class="cta-actions">
-        <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp</a>
-        <a href="mailto:contacto@iaechavarria.com" class="btn btn-ghost"><svg aria-hidden="true"><use href="#i-mail"/></svg>Escribir un correo</a>
+        <a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="btn btn-wa" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg>Hablar por WhatsApp<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+        <a href="mailto:{{legal.email}}" class="btn btn-ghost"><svg aria-hidden="true"><use href="#i-mail"/></svg>Escribir un correo</a>
       </div>
     </div>
   </div>
 </section>
 </main>
 
-<footer>
-  <div class="wrap footer-inner">
-    <a href="#top" class="footer-logo" aria-label="ERconnectIA — CRM conversacional con IA"><img class="logo-on-dark" src="/assets/img/logo/erconnectia-logo-on-dark.svg" alt="ERconnectIA — CRM conversacional con IA" width="600" height="420"><img class="logo-on-light" src="/assets/img/logo/erconnectia-logo-on-light.svg" alt="" aria-hidden="true" width="600" height="500"></a>
-    <span>© 2026 ERconnectIA · <a href="/privacidad/" style="color:inherit;">Privacidad</a></span>
-    <div class="social-links">
-      <!-- TODO: reemplazar # por el enlace real de Instagram -->
-      <a href="#" class="social-icon" aria-label="Instagram de ERconnectIA" title="Instagram (pendiente de configurar)">IG</a>
-      <!-- TODO: reemplazar # por el enlace real de Facebook -->
-      <a href="#" class="social-icon" aria-label="Facebook de ERconnectIA" title="Facebook (pendiente de configurar)">f</a>
-    </div>
-    <span style="display:flex;align-items:center;gap:7px;"><svg width="15" height="15" aria-hidden="true"><use href="#i-mail"/></svg>contacto@iaechavarria.com</span>
-  </div>
-</footer>
+<!--@include partials/footer.es.html-->
 
-<a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="wa-float" aria-label="Escríbenos por WhatsApp" title="Escríbenos por WhatsApp">
+<a href="https://wa.me/573337178377?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20sus%20servicios." class="wa-float" aria-label="Escríbenos por WhatsApp (se abre en una pestaña nueva)" title="Escríbenos por WhatsApp (se abre en una pestaña nueva)" target="_blank" rel="noopener noreferrer">
   <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
 </a>
 

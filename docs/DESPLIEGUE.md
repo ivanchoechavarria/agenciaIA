@@ -42,6 +42,9 @@ VS Code ── commit + push ──► GitHub (rama main)
 
 **Opción B — transferir el registro a Hostinger.** Desbloquea el dominio y pide el código de autorización en GoDaddy, y luego inicia la transferencia en Hostinger (5–7 días, suma un año de renovación). No es necesaria para alojar el sitio; puedes hacerla más adelante.
 
+## Antes de publicar por primera vez: datos legales
+Los textos legales (términos, privacidad, cookies) y el pie de página llevan datos de identificación que **tú** debes aportar. Están en `site.config.json`, sección `legal` (`titular`, `nit`, `domicilio`, correo, teléfono y fechas de vigencia). Si alguno queda vacío, la versión de pruebas lo muestra resaltado como «PENDIENTE» y el build de producción (y `publicar.mjs`) **se niega a publicar**. Al actualizar un texto legal, cambia también `vigencia` y `vigenciaEn`. Detalle y revisión legal en `docs/LEGAL.md`.
+
 ## Día a día en VS Code
 Terminal → **Run Task…** (o `Ctrl+Shift+P` → *Tasks: Run Task*):
 
@@ -52,6 +55,7 @@ Terminal → **Run Task…** (o `Ctrl+Shift+P` → *Tasks: Run Task*):
 | **2b. Auditoría responsive** | Desbordes, texto pegado y objetivos táctiles en 320–1440 px, oscuro y claro |
 | **2c. Prueba del chat del hero** | Bucle, audio inicial, ES/EN, que no se recorte y que no se congele en táctil |
 | **3. Probar versión de pruebas en local** | Simula GitHub Pages en `http://localhost:5501/agenciaIA/` |
+| **2d. Prueba del aviso de cookies y del pie** | Aviso de cookies, tema sin consentimiento, enlaces a WhatsApp en pestaña nueva y pie legal |
 | **4. PUBLICAR EN PRODUCCIÓN** | Comprueba, pide confirmación y crea la versión que se despliega en Hostinger |
 
 **Flujo normal**
@@ -88,7 +92,7 @@ Sustituye el dominio si cambia. Todo debe responder como se indica:
 
 | Dirección | Debe responder |
 |---|---|
-| `https://erconnectia.com/`, `/en/`, `/privacidad/`, `/en/privacy/` | 200 |
+| `https://erconnectia.com/`, `/en/`, `/privacidad/`, `/en/privacy/`, `/terminos/`, `/en/terms/`, `/cookies/`, `/en/cookies/` | 200 |
 | `/sitemap.xml`, `/robots.txt`, `/favicon.ico` | 200 |
 | `http://erconnectia.com/` y `https://www.erconnectia.com/` | 301 → `https://erconnectia.com/` |
 | `/index.html` y `/en/index.html` | 301 → `/` y `/en/` |
