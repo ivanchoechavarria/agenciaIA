@@ -72,6 +72,17 @@ for (const file of pages) {
     if (m.canonical && !Object.values(m.hreflang).includes(m.canonical)) add(page, "warn", "hreflang", "El canonical no aparece entre los hreflang (debe incluirse a sí misma).");
   }
 
+  // Favicon (el ícono junto al resultado en Google): declarado, existente y en tamaños múltiplos de 48
+  const iconLinks = links.filter((l) => /(^|\s)(shortcut )?icon(\s|$)/.test(attr(l, "rel") || ""));
+  if (!iconLinks.length) add(page, "warn", "favicon", "Sin favicon declarado (<link rel=\"icon\">): Google mostrará un ícono genérico.");
+  for (const l of iconLinks) {
+    const href = attr(l, "href") || "";
+    const local = resolveLocal(href.split("?")[0], file);
+    if (local && !existsSync(local)) add(page, "error", "favicon", `El favicon no existe: ${href}`);
+    const sz = (attr(l, "sizes") || "").match(/^(\d+)x\1$/);
+    if (sz && Number(sz[1]) % 48 !== 0 && !/apple/.test(attr(l, "rel") || "")) add(page, "info", "favicon", `Google recomienda tamaños múltiplos de 48 px; este es ${sz[0]}.`);
+  }
+
   // Open Graph / Twitter
   for (const p of ["og:title", "og:description", "og:url", "og:image", "og:type"]) {
     if (!getMeta("property", p)) add(page, p === "og:image" ? "warn" : "info", "social", `Falta ${p}${p === "og:image" ? " (sin imagen, las vistas previas en redes salen vacías)" : ""}.`);
@@ -155,6 +166,7 @@ for (const [page, m] of Object.entries(meta)) {
 const has = (n) => existsSync(join(root, n));
 if (!has("sitemap.xml")) add("(sitio)", "error", "sitemap", "No existe sitemap.xml.");
 if (!has("robots.txt")) add("(sitio)", "warn", "robots", "No existe robots.txt.");
+if (!has("favicon.ico")) add("(sitio)", "warn", "favicon", "No existe /favicon.ico (Google y los navegadores lo piden como respaldo).");
 if (!has("404.html")) add("(sitio)", "info", "404", "No existe 404.html (GitHub Pages lo sirve para rutas inexistentes).");
 const cssKb = files.filter((f) => f.endsWith(".css")).reduce((s, f) => s + statSync(f).size, 0) / 1024;
 const jsKb = files.filter((f) => f.endsWith(".js")).reduce((s, f) => s + statSync(f).size, 0) / 1024;

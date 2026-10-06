@@ -10,7 +10,8 @@
     "assets",
     "sitemap.xml",
     "robots.txt",
-    ".htaccess"
+    ".htaccess",
+    "favicon.ico"
   ],
   "exclude": [
     "assets/img/logo/source",
