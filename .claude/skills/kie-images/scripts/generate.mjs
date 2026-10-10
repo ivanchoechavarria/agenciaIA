@@ -61,13 +61,15 @@ const outDir = join(root, "assets", "img");
 mkdirSync(outDir, { recursive: true });
 
 let outPath, out = buf;
+const raw = process.argv.includes("--raw"); // --raw: guarda la imagen original de Kie, sin convertir ni recomprimir
 try {
+  if (raw) throw new Error("raw");
   const sharp = (await import("sharp")).default;
   out = await sharp(buf).webp({ quality: 82 }).toBuffer();
   outPath = join(outDir, `${name}.webp`);
 } catch {
   outPath = join(outDir, `${name}.${format === "jpeg" ? "jpg" : "png"}`);
-  console.log("sharp no instalado: se guarda sin convertir a WebP.");
+  if (!raw) console.log("sharp no instalado: se guarda sin convertir a WebP.");
 }
 writeFileSync(outPath, out);
 console.log(`Guardada: ${outPath} (${(out.length / 1024).toFixed(0)} KB, créditos: ${result.creditsConsumed ?? "n/d"})`);

@@ -98,6 +98,8 @@ Sustituye el dominio si cambia. Todo debe responder como se indica:
 | `/index.html` y `/en/index.html` | 301 → `/` y `/en/` |
 | `/privacidad.html` | 301 → `/privacidad/` |
 | `/en/privacidad.html` | 301 → `/en/privacy/` |
+| `/privacidad/`, `/cookies/`, `/terminos/` y las de `/en/` | 200 y con `<meta name="robots" content="noindex, follow">` (`curl -s https://erconnectia.com/privacidad/ \| grep robots`) |
+| `/sitemap.xml` | solo `/` y `/en/` |
 | Una ruta inexistente | página 404 propia |
 | `/docs/`, `/.claude/`, `/scripts/` | 404 (no se publican) |
 

@@ -67,3 +67,18 @@ Informa conteos antes/después y los archivos tocados. No afirmes mejoras de pos
 - Los enlaces a WhatsApp llevan siempre `target="_blank" rel="noopener noreferrer"` y un aviso para lectores de pantalla.
 - Las tipografías se alojan en `assets/fonts/` (ver `docs/TIPOGRAFIA.md`): no enlazar Google Fonts ni otros CDN de fuentes; la auditoría lo avisa. Las precargas viven en `partials/head-fonts.html` y se insertan con `<!--@include partials/head-fonts.html-->`.
 - El aviso de cookies está apagado (`COOKIE_BANNER = false` en `main.js`) hasta añadir analítica (GA4): entonces encenderlo y actualizar las políticas (`docs/LEGAL.md`).
+
+## Qué se indexa y qué no
+| Se indexa (`index, follow`, en `sitemap.xml`) | No se indexa (`noindex, follow`, fuera del `sitemap.xml`) |
+|---|---|
+| Portada `/` y `/en/` y las futuras páginas de servicio (`/crm-whatsapp/`…) | Páginas legales: `/terminos/`, `/privacidad/`, `/cookies/` y sus versiones `/en/…` |
+| | `404.html` y cualquier página de gracias, pruebas o utilidades |
+
+Reglas para que Google lo respete:
+1. La etiqueta va en el HTML: `<meta name="robots" content="noindex, follow">`. `follow` deja que Google siga los enlaces.
+2. **Nunca bloquear con `Disallow` en `robots.txt` una página `noindex`**: Google no podría leer la etiqueta y la seguiría mostrando.
+3. Una página `noindex` no va en `sitemap.xml` (sería pedir y negar la indexación a la vez).
+4. Siguen siendo públicas y accesibles (Meta, Google Ads y WhatsApp Business piden una URL pública de privacidad).
+5. La auditoría avisa de: página `noindex` en el sitemap, `Disallow` que bloquea una página `noindex` y página legal indexable.
+6. Al hacer `noindex` una página ya indexada: publicar, y en Search Console usar «Inspección de URL → Solicitar indexación» (para que Google la vuelva a rastrear) y, si urge, «Eliminaciones» (oculta temporalmente la URL mientras Google procesa el `noindex`). Tarda días o semanas.
+

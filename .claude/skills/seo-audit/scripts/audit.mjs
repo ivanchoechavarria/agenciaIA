@@ -178,8 +178,31 @@ if (existsSync(smFile)) {
   for (const [p, c] of canons) if (c && !locs.includes(c)) add(p, "warn", "sitemap", `El canonical no está en sitemap.xml: ${c}`);
   for (const l of locs) if (!canons.some(([, c]) => c === l)) add("sitemap.xml", "warn", "sitemap", `URL del sitemap sin página canónica correspondiente: ${l}`);
   for (const l of locs) if (/[.]html([?#]|$)/.test(l)) add("sitemap.xml", "warn", "url", `URL poco amigable en el sitemap: ${l}`);
+  // Una página con noindex no debe estar en el sitemap (le pide a Google indexarla y a la vez que no lo haga)
+  for (const [p, x] of Object.entries(meta)) if (noindexPages.has(p) && x.canonical && locs.includes(x.canonical)) add(p, "warn", "indexing", `Tiene noindex pero aparece en sitemap.xml: ${x.canonical}`);
 }
 for (const [p, x] of Object.entries(meta)) if (x.canonical && /[.]html([?#]|$)/.test(x.canonical) && !noindexPages.has(p)) add(p, "warn", "url", `El canonical termina en .html: ${x.canonical}`);
+
+// Indexación: robots.txt no debe bloquear páginas con noindex (Google no podría leer el noindex), y las legales no se indexan
+const robotsFile = join(root, "robots.txt");
+if (existsSync(robotsFile)) {
+  const rules = [];
+  let star = false;
+  for (const line of readFileSync(robotsFile, "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Za-z-]+)\s*:\s*(.*?)\s*$/);
+    if (!m) continue;
+    if (/^user-agent$/i.test(m[1])) star = m[2] === "*";
+    else if (star && /^disallow$/i.test(m[1]) && m[2]) rules.push(m[2]);
+  }
+  for (const [p, x] of Object.entries(meta)) {
+    if (!noindexPages.has(p) || !x.canonical) continue;
+    const path = new URL(x.canonical).pathname;
+    if (rules.some((r) => path.startsWith(r))) add(p, "error", "indexing", "robots.txt bloquea esta página con noindex: Google no podrá leer el noindex y puede seguir mostrándola. Quita ese Disallow.");
+  }
+}
+for (const p of Object.keys(meta)) {
+  if (/(^|\/)(privacidad|privacy|terminos|terms|cookies)\//.test(p) && !noindexPages.has(p)) add(p, "warn", "indexing", "Página legal indexable: añade <meta name=\"robots\" content=\"noindex, follow\"> (no necesita aparecer en Google).");
+}
 
 // Archivos de sitio
 const has = (n) => existsSync(join(root, n));
@@ -192,7 +215,7 @@ const jsKb = files.filter((f) => f.endsWith(".js")).reduce((s, f) => s + statSyn
 add("(sitio)", "info", "peso", `CSS ${cssKb.toFixed(0)} KB · JS ${jsKb.toFixed(0)} KB (sin minificar).`);
 
 // Las páginas noindex (p. ej. 404) solo se revisan en lo básico
-const keep = new Set(["robots", "title", "lang", "viewport", "img-alt", "img-missing", "link-broken", "anchor"]);
+const keep = new Set(["robots", "title", "lang", "viewport", "img-alt", "img-missing", "link-broken", "anchor", "indexing", "sitemap"]);
 for (let i = findings.length - 1; i >= 0; i--) if (noindexPages.has(findings[i].page) && !keep.has(findings[i].rule)) findings.splice(i, 1);
 
 if (AS_JSON) { console.log(JSON.stringify(findings, null, 2)); process.exit(0); }
